@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>YouTube Thumbnail Downloader</title>
+</head>
+<body>
+  <h1>YouTube Thumbnail Downloader</h1>
+  <input type="text" id="videoLinkInput" placeholder="Enter YouTube Video Link">
+  <button onclick="downloadThumbnail()" id="ytbutton">Download Thumbnail</button>
+  <div id="output"></div>
+
+  <script>
+    function getVideoIdFromLink(link) {
+      const videoIdRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;
+      const match = link.match(videoIdRegex);
+      return match ? match[1] : null;
+    }
+
+    function downloadThumbnail() {
+      const videoLink = document.getElementById('videoLinkInput').value.trim();
+      const videoId = getVideoIdFromLink(videoLink);
+
+      if (videoId) {
+        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        const link = document.createElement('a');
+        link.href = thumbnailUrl;
+        link.setAttribute('target', '_blank'); // Open in a new tab
+        link.setAttribute('download', `thumbnail_${videoId}.jpg`);
+        link.innerText = 'Download Thumbnail';
+        document.getElementById('output').innerHTML = '';
+        document.getElementById('output').appendChild(link);
+      } else {
+        alert('Please enter a valid YouTube Video Link');
+      }
+    }
+  </script>
+</body>
+</html>
